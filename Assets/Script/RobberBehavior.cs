@@ -31,9 +31,9 @@ public class RobberBehavior : MonoBehaviour
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor);
         Selector openDoor = new Selector("Open Door");
         
-        openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
-        
+        openDoor.AddChild(goToFrontDoor);
+      
         steal.AddChild(openDoor);
         steal.AddChild(goToDiamond);
         steal.AddChild(goToVan);
