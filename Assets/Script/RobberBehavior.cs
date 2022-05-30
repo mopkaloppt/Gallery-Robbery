@@ -9,6 +9,7 @@ public class RobberBehavior : MonoBehaviour
     public GameObject van;
     public GameObject backdoor;
     public GameObject frontdoor;
+
     NavMeshAgent agent;
     
     public enum ActionState { IDLE, WORKING };
@@ -31,8 +32,8 @@ public class RobberBehavior : MonoBehaviour
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor);
         Selector openDoor = new Selector("Open Door");
         
-        openDoor.AddChild(goToBackDoor);
         openDoor.AddChild(goToFrontDoor);
+        openDoor.AddChild(goToBackDoor);
       
         steal.AddChild(openDoor);
         steal.AddChild(goToDiamond);
@@ -43,7 +44,14 @@ public class RobberBehavior : MonoBehaviour
     }
     public Node.Status GoToDiamond()
     {
-        return GoToLocation(diamond.transform.position);
+        Node.Status diamondStatus = GoToLocation(diamond.transform.position);
+        if (diamondStatus == Node.Status.SUCCESS)
+        {   // diamond.transform.parent is Robber Unity Engine Transform
+            diamond.transform.parent = this.gameObject.transform;
+            return diamondStatus;
+        }
+        else    
+            return diamondStatus;       
     } 
     public Node.Status GoToVan()
     {
@@ -51,11 +59,26 @@ public class RobberBehavior : MonoBehaviour
     }
     public Node.Status GoToBackDoor()
     {
-        return GoToLocation(backdoor.transform.position);
+        return GotoToDoor(backdoor);
     }
     public Node.Status GoToFrontDoor()
     {
-        return GoToLocation(frontdoor.transform.position);
+        return GotoToDoor(frontdoor);
+    }
+    public Node.Status GotoToDoor(GameObject door)
+    {
+        Node.Status doorStatus = GoToLocation(door.transform.position);
+        if (doorStatus == Node.Status.SUCCESS)
+        {
+            if (!door.GetComponent<Lock>().isLocked)
+            {
+                door.SetActive(false);
+                return Node.Status.SUCCESS;
+            }
+            return Node.Status.FAILURE;
+        }
+        else
+            return doorStatus;
     }
     public Node.Status GoToLocation(Vector3 destination)
     {
