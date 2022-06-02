@@ -3,30 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RobberBehavior : MonoBehaviour
+public class RobberBehavior : BTAgent
 {
     public GameObject diamond;
     public GameObject van;
     public GameObject backdoor;
     public GameObject frontdoor;
 
-    NavMeshAgent agent;
-    
-    public enum ActionState { IDLE, WORKING };
-    ActionState state = ActionState.IDLE;
-
-    BehaviorTree tree = new BehaviorTree();
-    Node.Status treeStatus = Node.Status.RUNNING;
-
     [Range(0, 1000)]
     public int money = 800;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
-        // Declare agent which is a NavMesh
-        agent = GetComponent<NavMeshAgent>();
-
+        base.Start();
         // Start with 3 actions in a behavior tree
         Sequence steal = new Sequence("Steal Something");
         Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
@@ -104,27 +94,6 @@ public class RobberBehavior : MonoBehaviour
         }
         else
             return doorStatus;
-    }
-    public Node.Status GoToLocation(Vector3 destination)
-    {
-        float distanceToTarget = Vector3.Distance(destination, this.transform.position);
-        if (state == ActionState.IDLE)
-        {
-            agent.SetDestination(destination);
-            state = ActionState.WORKING;
-        }
-        // Agent didn't reach the destination
-        else if (Vector3.Distance(agent.pathEndPosition, destination) >= 2)
-        {
-            state = ActionState.IDLE;
-            return Node.Status.FAILURE;
-        }
-        else if (distanceToTarget < 2)
-        {
-            state = ActionState.IDLE;
-            return Node.Status.SUCCESS;
-        }
-        return Node.Status.RUNNING;
     }
     // Update is called once per frame
     void Update()
