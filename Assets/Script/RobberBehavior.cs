@@ -39,7 +39,10 @@ public class RobberBehavior : MonoBehaviour
         openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
         
-        steal.AddChild(hasGotMoney);
+        Inverter invertMoney = new Inverter("Invert Money");
+        invertMoney.AddChild(hasGotMoney); // hasn't got money
+
+        steal.AddChild(invertMoney);
         steal.AddChild(openDoor);
         steal.AddChild(goToDiamond);
         steal.AddChild(goToVan);
@@ -49,9 +52,11 @@ public class RobberBehavior : MonoBehaviour
     }
     public Node.Status HasMoney()
     {
-        // Steal if money < 500
-        if (money >= 500)
+        // Steal if money < 500 or even if the agent doesn't have any money, steal anyway
+        if (money < 500)
         {
+            // The status of this node will be inverted in invertMoney.AddChild(hasGotMoney);
+            // Essentially, it will not return FAILURE so that tree can kick off its process.
             return Node.Status.FAILURE;
         }
         return Node.Status.SUCCESS;    
