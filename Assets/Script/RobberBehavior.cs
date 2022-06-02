@@ -18,6 +18,9 @@ public class RobberBehavior : MonoBehaviour
     BehaviorTree tree = new BehaviorTree();
     Node.Status treeStatus = Node.Status.RUNNING;
 
+    [Range(0, 1000)]
+    public int money = 800;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,7 @@ public class RobberBehavior : MonoBehaviour
 
         // Start with 3 actions in a behavior tree
         Sequence steal = new Sequence("Steal Something");
+        Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
         Leaf goToDiamond = new Leaf("Go To Diamond", GoToDiamond);
         Leaf goToVan = new Leaf("Go To Van", GoToVan);
         Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor);
@@ -34,13 +38,23 @@ public class RobberBehavior : MonoBehaviour
         
         openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
-      
+        
+        steal.AddChild(hasGotMoney);
         steal.AddChild(openDoor);
         steal.AddChild(goToDiamond);
         steal.AddChild(goToVan);
         tree.AddChild(steal);
 
         tree.PrinTree();
+    }
+    public Node.Status HasMoney()
+    {
+        // Steal if money < 500
+        if (money >= 500)
+        {
+            return Node.Status.FAILURE;
+        }
+        return Node.Status.SUCCESS;    
     }
     public Node.Status GoToDiamond()
     {
@@ -104,7 +118,7 @@ public class RobberBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (treeStatus == Node.Status.RUNNING)
+        if (treeStatus != Node.Status.SUCCESS)
         {
             treeStatus = tree.Process();
         }            
