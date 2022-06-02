@@ -69,7 +69,13 @@ public class RobberBehavior : MonoBehaviour
     } 
     public Node.Status GoToVan()
     {
-        return GoToLocation(van.transform.position);
+        Node.Status vanStatus = GoToLocation(van.transform.position);
+        if (vanStatus == Node.Status.SUCCESS)
+        {             
+            money += 300;
+            diamond.SetActive(false);
+        }
+        return vanStatus;
     }
     public Node.Status GoToBackDoor()
     {
@@ -118,8 +124,10 @@ public class RobberBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        // Not equal SUCCESS means that the money falls below 500, so the agent is triggered to steal
         if (treeStatus != Node.Status.SUCCESS)
         {
+            // Triggering Steal sequence
             treeStatus = tree.Process();
         }            
     }
