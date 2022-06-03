@@ -14,14 +14,17 @@ public class BTAgent : MonoBehaviour
 
     public Node.Status treeStatus = Node.Status.RUNNING;
 
+    WaitForSeconds waitForSeconds;
+
     // Start is called before the first frame update
     public void Start()
     {
         // Declare agent which is a NavMesh
         agent = GetComponent<NavMeshAgent>();
         tree = new BehaviorTree();
-    }
-    
+        waitForSeconds = new WaitForSeconds(Random.Range(0.1f, 1f));
+        StartCoroutine("Behave");
+    }  
     public Node.Status GoToLocation(Vector3 destination)
     {
         float distanceToTarget = Vector3.Distance(destination, this.transform.position);
@@ -43,14 +46,12 @@ public class BTAgent : MonoBehaviour
         }
         return Node.Status.RUNNING;
     }
-    // Update is called once per frame
-    void Update()
-    {   
-        // Not equal SUCCESS means that the money falls below 500, so the agent is triggered to steal
-        if (treeStatus != Node.Status.SUCCESS)
+    IEnumerator Behave()
+    {
+        while (true)
         {
-            // Triggering Steal sequence
             treeStatus = tree.Process();
-        }            
+            yield return waitForSeconds;
+        }
     }
 }

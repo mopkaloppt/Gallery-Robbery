@@ -15,6 +15,10 @@ public class BehaviorTree : Node
     } 
     public override Status Process()
     {
+        // Need to check this and return SUCCESS, since we now start the BehaviorTree 
+        // before any child gets added via StartCoroutine("Behave") in BTAgent
+        if (children.Count == 0)
+            return Status.SUCCESS;
         // This makes the BehaviorTree run
         return children[currentChild].Process();
     }

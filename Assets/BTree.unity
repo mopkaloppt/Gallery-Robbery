@@ -2002,10 +2002,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db6870715992646d48afaeadf8a94d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  state: 0
+  treeStatus: 1
   diamond: {fileID: 2063104220}
   van: {fileID: 1686372846}
   backdoor: {fileID: 919599686}
   frontdoor: {fileID: 1791870521}
+  money: 1000
 --- !u!1 &716268924
 GameObject:
   m_ObjectHideFlags: 0
@@ -4881,10 +4885,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db6870715992646d48afaeadf8a94d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  state: 0
+  treeStatus: 1
   diamond: {fileID: 1550492363}
   van: {fileID: 0}
   backdoor: {fileID: 0}
   frontdoor: {fileID: 0}
+  money: 800
 --- !u!1 &1575733671
 GameObject:
   m_ObjectHideFlags: 0
@@ -5096,10 +5104,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db6870715992646d48afaeadf8a94d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  state: 0
+  treeStatus: 1
   diamond: {fileID: 0}
   van: {fileID: 0}
   backdoor: {fileID: 0}
   frontdoor: {fileID: 0}
+  money: 800
 --- !u!1 &1697981437
 GameObject:
   m_ObjectHideFlags: 0
