@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class RobberBehavior : BTAgent
 {
     public GameObject diamond;
+    public GameObject painting;
+    public GameObject stolen;
     public GameObject van;
     public GameObject backdoor;
     public GameObject frontdoor;
@@ -21,20 +23,25 @@ public class RobberBehavior : BTAgent
         Sequence steal = new Sequence("Steal Something");
         Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
         Leaf goToDiamond = new Leaf("Go To Diamond", GoToDiamond);
+        Leaf goToPainting = new Leaf("Go To Painting", GoToPainting);
         Leaf goToVan = new Leaf("Go To Van", GoToVan);
         Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor);
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor);
         Selector openDoor = new Selector("Open Door");
+        Selector objectToSteal = new Selector("Steal More!");
         
         openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
+
+        objectToSteal.AddChild(goToDiamond);
+        objectToSteal.AddChild(goToPainting);
         
         Inverter invertMoney = new Inverter("Invert Money");
         invertMoney.AddChild(hasGotMoney); // hasn't got money
 
         steal.AddChild(invertMoney);
         steal.AddChild(openDoor);
-        steal.AddChild(goToDiamond);
+        steal.AddChild(objectToSteal);
         steal.AddChild(goToVan);
         tree.AddChild(steal);
 
@@ -53,14 +60,29 @@ public class RobberBehavior : BTAgent
     }
     public Node.Status GoToDiamond()
     {
+        if (!diamond.activeSelf) return Node.Status.FAILURE;
         Node.Status diamondStatus = GoToLocation(diamond.transform.position);
         if (diamondStatus == Node.Status.SUCCESS)
         {   // diamond.transform.parent is Robber Unity Engine Transform
             diamond.transform.parent = this.gameObject.transform;
+            stolen = diamond;
             return diamondStatus;
         }
         else    
             return diamondStatus;       
+    }
+    public Node.Status GoToPainting()
+    {
+        if (!painting.activeSelf) return Node.Status.FAILURE;
+        Node.Status paintingStatus = GoToLocation(painting.transform.position);
+        if (paintingStatus == Node.Status.SUCCESS)
+        {   // diamond.transform.parent is Robber Unity Engine Transform
+            painting.transform.parent = this.gameObject.transform;
+            stolen = painting;
+            return paintingStatus;
+        }
+        else    
+            return paintingStatus;       
     } 
     public Node.Status GoToVan()
     {
@@ -68,7 +90,7 @@ public class RobberBehavior : BTAgent
         if (vanStatus == Node.Status.SUCCESS)
         {             
             money += 300;
-            diamond.SetActive(false);
+            stolen.SetActive(false);
         }
         return vanStatus;
     }
@@ -87,7 +109,7 @@ public class RobberBehavior : BTAgent
         {
             if (!door.GetComponent<Lock>().isLocked)
             {
-                door.SetActive(false);
+                door.GetComponent<NavMeshObstacle>().enabled = false;
                 return Node.Status.SUCCESS;
             }
             return Node.Status.FAILURE;
