@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class RobberBehavior : BTAgent
 {
+    public GameObject[] art;
     public GameObject diamond;
     public GameObject painting;
     public GameObject stolen;
@@ -22,19 +23,26 @@ public class RobberBehavior : BTAgent
         // Start with 3 actions in a behavior tree
         Sequence steal = new Sequence("Steal Something");
         Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
+        
+        Leaf goToArt1 = new Leaf("Go To Art 1", GoToArt1);
+        Leaf goToArt2 = new Leaf("Go To Art 2", GoToArt2);
+        Leaf goToArt3 = new Leaf("Go To Art 3", GoToArt3);
+        
+
         Leaf goToDiamond = new Leaf("Go To Diamond", GoToDiamond, 1);
         Leaf goToPainting = new Leaf("Go To Painting", GoToPainting, 2);
         Leaf goToVan = new Leaf("Go To Van", GoToVan);
         Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor, 2);
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor, 1);
         PSelector openDoor = new PSelector("Open Door");
-        PSelector objectToSteal = new PSelector("Steal More!");
+        RSelector objectToSteal = new RSelector("Steal More!");
         
         openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
 
-        objectToSteal.AddChild(goToDiamond);
-        objectToSteal.AddChild(goToPainting);
+        objectToSteal.AddChild(goToArt1);
+        objectToSteal.AddChild(goToArt2);
+        objectToSteal.AddChild(goToArt2);
         
         Inverter invertMoney = new Inverter("Invert Money");
         invertMoney.AddChild(hasGotMoney); // hasn't got money
@@ -83,7 +91,46 @@ public class RobberBehavior : BTAgent
         }
         else    
             return paintingStatus;       
-    } 
+    }
+    public Node.Status GoToArt1()
+    {
+        if (!art[0].activeSelf) return Node.Status.FAILURE;
+        Node.Status s = GoToLocation(art[0].transform.position);
+        if (s == Node.Status.SUCCESS)
+        {   // diamond.transform.parent is Robber Unity Engine Transform
+            art[0].transform.parent = this.gameObject.transform;
+            stolen = art[0];
+            return s;
+        }
+        else    
+            return s;       
+    }
+    public Node.Status GoToArt2()
+    {
+        if (!art[1].activeSelf) return Node.Status.FAILURE;
+        Node.Status s = GoToLocation(art[1].transform.position);
+        if (s == Node.Status.SUCCESS)
+        {   // diamond.transform.parent is Robber Unity Engine Transform
+            art[1].transform.parent = this.gameObject.transform;
+            stolen = art[1];
+            return s;
+        }
+        else    
+            return s;       
+    }
+    public Node.Status GoToArt3()
+    {
+        if (!art[2].activeSelf) return Node.Status.FAILURE;
+        Node.Status s = GoToLocation(art[2].transform.position);
+        if (s == Node.Status.SUCCESS)
+        {   // diamond.transform.parent is Robber Unity Engine Transform
+            art[2].transform.parent = this.gameObject.transform;
+            stolen = art[2];
+            return s;
+        }
+        else    
+            return s;       
+    }
     public Node.Status GoToVan()
     {
         Node.Status vanStatus = GoToLocation(van.transform.position);

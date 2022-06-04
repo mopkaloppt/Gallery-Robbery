@@ -2005,6 +2005,15 @@ MonoBehaviour:
   agent: {fileID: 0}
   state: 0
   treeStatus: 1
+  art:
+  - {fileID: 1904932022}
+  - {fileID: 1101234485}
+  - {fileID: 1922895633}
+  - {fileID: 1544815185}
+  - {fileID: 1959054990}
+  - {fileID: 925317490}
+  - {fileID: 425408384}
+  - {fileID: 915494408}
   diamond: {fileID: 2063104220}
   painting: {fileID: 1904932022}
   stolen: {fileID: 0}
@@ -4890,6 +4899,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   state: 0
   treeStatus: 1
+  art: []
   diamond: {fileID: 1550492363}
   painting: {fileID: 0}
   stolen: {fileID: 0}
@@ -5111,6 +5121,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   state: 0
   treeStatus: 1
+  art: []
   diamond: {fileID: 0}
   painting: {fileID: 0}
   stolen: {fileID: 0}

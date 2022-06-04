@@ -4,8 +4,9 @@ using UnityEngine;
 
 // Priority Selector
 public class PSelector : Node
-{
+{  
     Node[] nodeArray;
+    public bool ordered = false;
     public PSelector(string n)
    {
        name =  n;
@@ -18,7 +19,11 @@ public class PSelector : Node
    }
     public override Status Process()
     {
-        OrderNodes();
+        if (!ordered)
+        {
+            OrderNodes();
+            ordered = true;
+        }      
         Debug.Log("Processing " + children[currentChild].name);
         // We are looping through each child for an action node (e.g. steal)
         Status childStatus = children[currentChild].Process();
