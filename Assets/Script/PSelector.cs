@@ -25,10 +25,13 @@ public class PSelector : Node
         if (childStatus == Status.RUNNING) return Status.RUNNING;
         if (childStatus == Status.SUCCESS)
         {
+            children[currentChild].sortOrder = 1;
             currentChild = 0;
             return Status.SUCCESS;
         }
         // If the currentChild failed, move on to the next child anyway.
+        else 
+            children[currentChild].sortOrder = 10;
         currentChild++;                
         if (currentChild >= children.Count)
         {

@@ -22,12 +22,12 @@ public class RobberBehavior : BTAgent
         // Start with 3 actions in a behavior tree
         Sequence steal = new Sequence("Steal Something");
         Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
-        Leaf goToDiamond = new Leaf("Go To Diamond", GoToDiamond, 2);
-        Leaf goToPainting = new Leaf("Go To Painting", GoToPainting, 1);
+        Leaf goToDiamond = new Leaf("Go To Diamond", GoToDiamond, 1);
+        Leaf goToPainting = new Leaf("Go To Painting", GoToPainting, 2);
         Leaf goToVan = new Leaf("Go To Van", GoToVan);
-        Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor);
-        Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor);
-        Selector openDoor = new Selector("Open Door");
+        Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor, 2);
+        Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor, 1);
+        PSelector openDoor = new PSelector("Open Door");
         PSelector objectToSteal = new PSelector("Steal More!");
         
         openDoor.AddChild(goToFrontDoor);
