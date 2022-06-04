@@ -15,6 +15,13 @@ public class Leaf : Node
         // SUCCESS, RUNNING, FAILURE
         ProcessMethod = pm;
     }
+    public Leaf(string n, Tick pm, int _sortOrder)
+    {
+        name = n;
+        // SUCCESS, RUNNING, FAILURE
+        ProcessMethod = pm;
+        sortOrder = _sortOrder;
+    }
     public override Status Process()
     {
         if(ProcessMethod != null)

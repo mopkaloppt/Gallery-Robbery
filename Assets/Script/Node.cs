@@ -9,12 +9,18 @@ public class Node
     public List<Node> children = new List<Node>();
     public int currentChild = 0;
     public string name;
+    public int sortOrder;
 
     // Constructor
     public Node() { }
     public Node(string n)
     {
         name = n;
+    }
+    public Node(string n, int _sortOrder)
+    {
+        name = n;
+        sortOrder = _sortOrder;
     }
     public virtual Status Process()
     {
