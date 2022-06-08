@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class RobberBehavior : BTAgent
 {
+    public GameObject cop;
     public GameObject[] art;
     public GameObject diamond;
     public GameObject stolenDiamond;
@@ -47,12 +48,26 @@ public class RobberBehavior : BTAgent
 
         steal.AddChild(invertMoney);
         steal.AddChild(openDoor);
-        steal.AddChild(goToDiamond);
         steal.AddChild(objectToSteal);
         steal.AddChild(goToVan);
-        tree.AddChild(steal);
 
+        Sequence runAway = new Sequence("Run Away");
+        Leaf canSeeCop = new Leaf("Saw Cop!", CanSeeCop);
+        Leaf fleeFromCop = new Leaf("Flee!", FleeFromCop);
+        runAway.AddChild(canSeeCop);
+        runAway.AddChild(fleeFromCop);
+
+        tree.AddChild(runAway);
         tree.PrinTree();
+    }
+    public Node.Status CanSeeCop()
+    {
+        return CanSee(cop.transform.position, "Cop", 20, 90);
+    }
+
+    public Node.Status FleeFromCop()
+    {
+        return Flee(cop.transform.position, 20);
     }
     public Node.Status HasMoney()
     {
