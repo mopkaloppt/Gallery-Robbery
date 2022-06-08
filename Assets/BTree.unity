@@ -2055,12 +2055,13 @@ MonoBehaviour:
   - {fileID: 425408384}
   - {fileID: 915494408}
   diamond: {fileID: 2063104220}
+  stolenDiamond: {fileID: 1184590652}
   painting: {fileID: 1904932022}
   stolen: {fileID: 0}
   van: {fileID: 1686372846}
   backdoor: {fileID: 919599686}
   frontdoor: {fileID: 1791870521}
-  money: 393
+  money: 0
 --- !u!1 &689410516
 GameObject:
   m_ObjectHideFlags: 3
@@ -3331,7 +3332,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0698925, y: 1}
+    m_SensorSize: {x: 0.2630435, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4134,6 +4135,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172151396}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1184590652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1184590653}
+  m_Layer: 0
+  m_Name: StolenDiamond
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1184590653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184590652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 642336161}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1235673727
 GameObject:
   m_ObjectHideFlags: 0
@@ -5128,6 +5160,7 @@ MonoBehaviour:
   treeStatus: 1
   art: []
   diamond: {fileID: 1550492363}
+  stolenDiamond: {fileID: 0}
   painting: {fileID: 0}
   stolen: {fileID: 0}
   van: {fileID: 0}
@@ -5350,6 +5383,7 @@ MonoBehaviour:
   treeStatus: 1
   art: []
   diamond: {fileID: 0}
+  stolenDiamond: {fileID: 0}
   painting: {fileID: 0}
   stolen: {fileID: 0}
   van: {fileID: 0}
@@ -5691,7 +5725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aabc3e9cc31ec420592b8e5a47a6a76d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLocked: 1
+  isLocked: 0
 --- !u!4 &1796479289 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a5028766c6c2448878d200bb33de1f59, type: 3}
