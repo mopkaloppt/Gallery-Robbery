@@ -14,7 +14,15 @@ public class Sequence : Node
         // We are looping through each child for an action node (e.g. steal)
         Status childStatus = children[currentChild].Process();
         if (childStatus == Status.RUNNING) return Status.RUNNING;
-        if (childStatus == Status.FAILURE) return Status.FAILURE;
+        if (childStatus == Status.FAILURE)
+        {
+            currentChild = 0;
+            foreach (Node n in children)
+            {
+                n.Reset();
+                return Status.FAILURE;
+            }     
+        } 
         // Here we know the currentChild Status is SUCCESS, move on to the next child
         currentChild++;
         if (currentChild >= children.Count)

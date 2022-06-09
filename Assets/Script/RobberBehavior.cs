@@ -23,7 +23,6 @@ public class RobberBehavior : BTAgent
     {
         base.Start();
         // Start with 3 actions in a behavior tree
-        Sequence steal = new Sequence("Steal Something");
         Leaf hasGotMoney = new Leaf("Has Got Money", HasMoney);
 
         RSelector objectToSteal = new RSelector("Steal More!");
@@ -39,35 +38,62 @@ public class RobberBehavior : BTAgent
         Leaf goToBackDoor = new Leaf("Go To BackDoor", GoToBackDoor, 2);
         Leaf goToFrontDoor = new Leaf("Go To FrontDoor", GoToFrontDoor, 1);
         PSelector openDoor = new PSelector("Open Door");
-        
+
         openDoor.AddChild(goToFrontDoor);
         openDoor.AddChild(goToBackDoor);
-        
-        Inverter invertMoney = new Inverter("Invert Money");
-        invertMoney.AddChild(hasGotMoney); // hasn't got money
-
-        steal.AddChild(invertMoney);
-        steal.AddChild(openDoor);
-        steal.AddChild(objectToSteal);
-        steal.AddChild(goToVan);
 
         Sequence runAway = new Sequence("Run Away");
         Leaf canSeeCop = new Leaf("Saw Cop!", CanSeeCop);
         Leaf fleeFromCop = new Leaf("Flee!", FleeFromCop);
+       
+        Inverter invertMoney = new Inverter("Invert Money");
+        invertMoney.AddChild(hasGotMoney); // hasn't got money
+
+        Inverter cantSeeCop = new Inverter("Can't See Cop");
+        cantSeeCop.AddChild(canSeeCop);
+
+        Sequence s1 = new Sequence("s1");
+        s1.AddChild(invertMoney);
+        Sequence s2 = new Sequence("s2");
+        s2.AddChild(cantSeeCop);
+        s2.AddChild(openDoor);
+        Sequence s3 = new Sequence("s3");
+        s3.AddChild(canSeeCop);
+        s3.AddChild(objectToSteal);
+        Sequence s4 = new Sequence("s4");
+        s4.AddChild(cantSeeCop);
+        s4.AddChild(goToVan);
+    
+        // steal.AddChild(s1);
+        // steal.AddChild(s2);
+        // steal.AddChild(s3);
+        // steal.AddChild(s4);
+        BehaviorTree seeCop = new BehaviorTree();
+        seeCop.AddChild(cantSeeCop);
+        DepSequence steal = new DepSequence("Steal Something", seeCop, agent);
+        steal.AddChild(invertMoney);
+        steal.AddChild(openDoor);
+        steal.AddChild(objectToSteal);
+        steal.AddChild(goToVan);
+        
         runAway.AddChild(canSeeCop);
         runAway.AddChild(fleeFromCop);
 
-        tree.AddChild(runAway);
+        Selector beThief = new Selector("Be A Thief");
+        beThief.AddChild(steal);
+        beThief.AddChild(runAway);
+        
+        tree.AddChild(beThief);
         tree.PrinTree();
     }
     public Node.Status CanSeeCop()
     {
-        return CanSee(cop.transform.position, "Cop", 20, 90);
+        return CanSee(cop.transform.position, "Cop", 10, 90);
     }
 
     public Node.Status FleeFromCop()
     {
-        return Flee(cop.transform.position, 20);
+        return Flee(cop.transform.position, 10);
     }
     public Node.Status HasMoney()
     {

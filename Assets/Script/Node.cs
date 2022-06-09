@@ -13,19 +13,32 @@ public class Node
 
     // Constructor
     public Node() { }
+
     public Node(string n)
     {
         name = n;
     }
+    
     public Node(string n, int _sortOrder)
     {
         name = n;
         sortOrder = _sortOrder;
     }
+
+    public void Reset()
+    {
+        foreach (Node n in children)
+        {
+            n.Reset();
+        }
+        currentChild = 0;
+    }
+
     public virtual Status Process()
     {
         return children[currentChild].Process();
     }
+
     public void AddChild(Node n)
     {
         children.Add(n);
